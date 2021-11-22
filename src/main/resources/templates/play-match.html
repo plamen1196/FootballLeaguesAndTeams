@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Matches</h1>
+    <div class="d-flex justify-content-center bg-secondary rounded">
+        <form th:method="patch"
+              th:action="@{/matches/play/{id}(id=${leagueId})}"
+              th:object="${selectTeamsBindingModel}"
+              class="text-light">
+            <h3 class="text-light border-bottom">Select Teams</h3>
+            <h5 th:if="${bad_credentials}" class="text-center bg-danger text-capitalize rounded">This team cannot play against itself!</h5>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="homeTeam">Home Team</label>
+                    <select th:field="*{homeTeamName}" th:errorclass="is-invalid" name="homeTeam" id="homeTeam" class="custom-select">
+                        <option value="" selected>Select Home Team</option>
+                        <option th:each="team : ${teams}"
+                                th:text="${team.name}"
+                                th:value="${team.name}"
+                                th:selected="${team.name} == *{homeTeamName}">Model
+                        </option>
+                    </select>
+                    <p id="homeTeamError" class="errors alert alert-danger invalid-feedback">You must select
+                        a team!</p>
+                </div>
+                <div class="col">
+                    <label for="homeGoals">Home Team Goals</label>
+                    <input th:field="*{homeTeamGoals}" th:errorclass="is-invalid" name="homeGoals" id="homeGoals" type="number"
+                           class="form-control">
+                    <p id="homeGoalsError" class="errors alert alert-danger invalid-feedback">Goals must be between 1
+                        and 99</p>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="awayTeam">Away Team</label>
+                    <select th:field="*{awayTeamName}" th:errorclass="is-invalid" name="awayTeam" id="awayTeam" class="custom-select">
+                        <option value="" selected>Select Away Team</option>
+                        <option th:each="team : ${teams}"
+                                th:text="${team.name}"
+                                th:value="${team.name}"
+                                th:selected="${team.name} == *{awayTeamName}">Model
+                        </option>
+                    </select>
+                    <p id="footError" class="errors alert alert-danger invalid-feedback">You must select
+                        a team!</p>
+                </div>
+                <div class="col">
+                    <label for="awayGoals">Away Team Goals</label>
+                    <input th:field="*{awayTeamGoals}" th:errorclass="is-invalid" name="awayGoals" id="awayGoals" type="number"
+                           class="form-control">
+                    <p id="awayGoalsError" class="errors alert alert-danger invalid-feedback">Goals must be between 1
+                        and 99</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Play Match</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

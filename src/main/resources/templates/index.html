@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main>
+    <div class="bg-secondary rounded">
+        <div class="container text-light text-center">
+            <h1 class="display-3"><strong class="font-weight-bold">Welcome to</strong></h1>
+            <h1 class="display-3"><strong class="font-weight-bold">Football Squads and </strong></h1>
+            <h1 class="display-2"><strong class="font-weight-bold">Mini Football Leagues</strong></h1>
+        </div>
+    </div>
+    <div class="container text-center rounded bg-success col-5 p-4 display-3 border border-dark">
+        <img class="mr-2 rounded img-fluid img-thumbnail" src="/images/cornertakenquickly.gif" alt="LogoTeam1"
+             width="498" height="280">
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

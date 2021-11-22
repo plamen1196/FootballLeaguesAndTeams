@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Edit League</h1>
+    <div class="d-flex justify-content-center">
+        <form th:method="patch"
+              th:action="@{/league/edit/{id}(id=${league.id})}"
+              th:object="${addLeagueBindingModel}"
+              class="text-light bg-secondary">
+            <h5 th:if="${bad_credentials}" class="text-center bg-danger text-capitalize rounded">League name is taken!</h5>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="name">League name</label>
+                    <input th:field="*{level}" th:errorclass="is-invalid" th:placeholder="${league.level}" name="name" id="name" type="text" class="form-control">
+                    <p id="nameError" class="errors alert alert-danger invalid-feedback">Name must be between 3
+                        and 20
+                        characters</p>
+                </div>
+                <div class="col">
+                    <label for="capacity">Capacity</label>
+                    <input th:field="*{capacity}" th:errorclass="is-invalid" th:placeholder="${league.capacity}" name="capacity" id="capacity" type="number" class="form-control" >
+                    <p id="capacityError" class="errors alert alert-danger invalid-feedback">Capacity must be less than 25 and more than 2</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Edit League</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Add Теам</h1>
+    <div class="d-flex justify-content-center">
+        <form th:method="post"
+              th:action="@{/team/add}"
+              th:object="${addTeamBindingModel}"
+              class="text-light bg-secondary">
+            <h5 th:if="${bad_credentials}" class="text-center bg-danger text-capitalize rounded">This team name is
+                taken!</h5>
+            <h5 th:if="${notEnoughCapacity}" class="text-center bg-danger text-capitalize rounded">There is not enough capacity!</h5>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="name">Team name</label>
+                    <input th:field="*{name}" th:errorclass="is-invalid" name="name" id="name" type="text"
+                           class="form-control" placeholder="Team name">
+                    <p id="nameError" class="errors alert alert-danger invalid-feedback">Name must be between 3
+                        and 20
+                        characters</p>
+                </div>
+                <div class="col">
+                    <label for="year">Creation year</label>
+                    <input th:field="*{year}" th:errorclass="is-invalid" name="year" id="year" type="number"
+                           class="form-control" placeholder="Creation year">
+                    <p id="yearError" class="errors alert alert-danger invalid-feedback">Year must be between 1850
+                        and 2021</p>
+                </div>
+            </div>
+            <div class="card-body d-lg-flex">
+                <img width="100px" height="120" src="/images/LOGO_1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text text-white font-weight-bold">Logo 1</p>
+                </div>
+                <img width="100px" height="120" src="/images/LOGO_2.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text text-white font-weight-bold">Logo 2</p>
+                </div>
+                <img width="100px" height="120" src="/images/LOGO_3.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text text-white font-weight-bold">Logo 3</p>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="logo">Logo</label>
+                    <select th:errorclass="is-invalid" name="logo" id="logo" class="custom-select">
+                        <option value="" selected>Select Logo</option>
+                        <option th:each="logo : ${T(com.example.exam2410.model.entity.enums.LogoEnum).values()}"
+                                th:text="${logo.name()}"
+                                th:value="${logo.name()}"
+                                th:selected="${logo.name()} == *{logo}">
+                        </option>
+                    </select>
+                    <p id="logoError" class="errors alert alert-danger invalid-feedback">You must select
+                        logo</p>
+                </div>
+                <div class="col">
+                    <label for="league">League</label>
+                    <select th:errorclass="is-invalid" name="league" id="league" class="custom-select">
+                        <option value="" selected>Select league</option>
+                        <option th:each="league : ${leagues}"
+                                th:text="${league.level}"
+                                th:value="${league.level}"
+                                th:selected="${league.level} == *{league}">Model
+                        </option>
+                    </select>
+                    <p id="leagueError" class="errors alert alert-danger invalid-feedback">You must select
+                        league</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Add New Теам</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Football Squads for Mini Football League</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/reset-css.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <script src="/css/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/css/js/bootstrap.min.js"></script>
+    <script src="/css/js/clicked.js"></script>
+</head>
+<header th:fragment="nav">
+    <nav class="navbar navbar-expand-md position-static navbar-dark fixed-top bg-success rounded border-dark">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-sm-auto">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <div class="form-inline my-2 my-lg-0 border px-3">
+                        <div class="text-white">Welcome, <th:block sec:authentication="name"></th:block>!</div>
+                        <form th:action="@{/users/logout}" th:method="post">
+                            <input class="btn btn-link nav-link" type="submit" value="Logout">
+                        </form>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/users/login}">Login</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/users/register}">Register</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/league/allleagues}">Leagues</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/team/ranking}">Ranking</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/team/myteams}">My Teams</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/team/add}">Add Team</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/player/add}">Add Player</a>
+                </li>
+                <li class="nav-item drop" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu position-static" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/league/add}">Add League</a>
+                        <a class="dropdown-item" th:href="@{/matches}">Matches</a>
+                    </div>
+                </li>
+            </ul>
+            <a class="navbar-brand" href="/">
+                <img width="50px" height="50" src="/images/football_ball_logo.png" alt="Football logo">
+            </a>
+        </div>
+    </nav>
+</header>
+<body>
+<footer th:fragment="footer" class="footer">
+    <div class="container-fluid text-center">
+        <div class="h5 text-white">
+            <p>&copy;Plamen Penev's project for SoftUni. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

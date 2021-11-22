@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Matches</h1>
+    <div class="d-flex justify-content-center bg-secondary rounded">
+        <form th:method="post"
+              th:action="@{/matches}"
+              th:object="${selectLeagueBindingModel}"
+              class="text-light">
+            <h3 class="text-light border-bottom">Select League</h3>
+            <h5 th:if="${showMatchResult}" class="display-4 text-center bg-danger text-capitalize rounded"
+                th:text="|RESULT: ${matchResult.homeTeamName}   ${matchResult.homeTeamGoals} : ${matchResult.awayTeamGoals}   ${matchResult.awayTeamName}|"></h5>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="league">Team</label>
+                    <select th:field="*{id}" th:errorclass="is-invalid" name="league" id="league" class="custom-select">
+                        <option value="" selected>Select League</option>
+                        <option th:each="league : ${leagues}"
+                                th:text="${league.level}"
+                                th:value="${league.id}"
+                                th:selected="${league.id} == *{id}">Model
+                        </option>
+                    </select>
+                    <p id="leagueError" class="errors alert alert-danger invalid-feedback">You must select
+                        league!</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Select League</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>
