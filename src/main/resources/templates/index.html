@@ -6,7 +6,7 @@
 <body>
 <header th:replace="templates/fragments::nav">
 </header>
-<main>
+<main class="p-5 bg-blur text-center my-main">
     <div class="bg-secondary rounded">
         <div class="container text-light text-center">
             <h1 class="display-3"><strong class="font-weight-bold">Welcome to</strong></h1>
@@ -18,6 +18,25 @@
         <img class="mr-2 rounded img-fluid img-thumbnail" src="/images/cornertakenquickly.gif" alt="LogoTeam1"
              width="498" height="280">
     </div>
+    <h3 class="border-bottom text-white text-center bg-dark">Premier League Current Standing</h3>
+    <div class="row mt-2 mb-2 text-white rounded text-center">
+        <div class="col-5 rounded m-auto pb-2">
+            <table id="standing" class="table-responsive table-hover table-dark">
+                <tr>
+                    <th class="p-1 font-weight-bold">Position</th>
+                    <th class="p-1 col-2 font-weight-bold">Logo</th>
+                    <th class="p-1 col-3 font-weight-bold">Team</th>
+                    <th class="p-1 font-weight-bold">Matches</th>
+                    <th class="p-1 font-weight-bold">Wins</th>
+                    <th class="p-1 font-weight-bold">Draws</th>
+                    <th class="p-1 font-weight-bold">Loses</th>
+                    <th class="p-1 font-weight-bold">Points</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </section>
+    <script th:src="@{css/js/premierLeagueStanding.js}"></script>
 </main>
 <footer th:replace="templates/fragments::footer">
 </footer>

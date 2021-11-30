@@ -88,7 +88,7 @@
                     <label for="position">Position</label>
                     <select th:errorclass="is-invalid" name="position" id="position" class="custom-select">
                         <option value="" selected>Select position</option>
-                        <option th:each="position : ${T(com.example.exam2410.model.entity.enums.PositionEnum).values()}"
+                        <option th:each="position : ${T(com.example.FootballLeagues.model.entity.enums.PositionEnum).values()}"
                                 th:text="${position.name()}"
                                 th:value="${position.name()}"
                                 th:selected="${position.name()} == *{position}">
@@ -101,7 +101,7 @@
                     <label for="foot">Better foot</label>
                     <select th:errorclass="is-invalid" name="foot" id="foot" class="custom-select">
                         <option value="" selected>Select foot</option>
-                        <option th:each="foot : ${T(com.example.exam2410.model.entity.enums.FootEnum).values()}"
+                        <option th:each="foot : ${T(com.example.FootballLeagues.model.entity.enums.FootEnum).values()}"
                                 th:text="${foot.name()}"
                                 th:value="${foot.name()}"
                                 th:selected="${foot.name()} == *{foot}">

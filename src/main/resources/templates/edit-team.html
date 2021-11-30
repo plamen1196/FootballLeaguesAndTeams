@@ -15,6 +15,7 @@
               class="text-light bg-secondary">
             <h5 th:if="${bad_credentials}" class="text-center bg-danger text-capitalize rounded">This team name is
                 taken!</h5>
+            <h5 th:if="${notEnoughCapacity}" class="text-center bg-danger text-capitalize rounded">Not enough capacity in the given league!</h5>
             <div class="form-row m-5">
                 <div class="col">
                     <label for="name">Team name</label>
@@ -51,7 +52,7 @@
                     <label for="logo">Logo</label>
                     <select th:errorclass="is-invalid" name="logo" id="logo" class="custom-select">
                         <option value="" selected>Select Logo</option>
-                        <option th:each="logo : ${T(com.example.exam2410.model.entity.enums.LogoEnum).values()}"
+                        <option th:each="logo : ${T(com.example.FootballLeagues.model.entity.enums.LogoEnum).values()}"
                                 th:text="${logo.name()}"
                                 th:value="${logo.name()}"
                                 th:selected="${logo.name()} == *{logo}">

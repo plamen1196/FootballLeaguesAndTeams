@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<main class="p-5 bg-secondary text-center my-main">
+    <h4 class="display-3 text-danger text-capitalize font-weight-bold" th:text="|Sorry, but we cannot find the resource with given id/name ${errorMessage}!|"></h4>
+    <h3 class="display-4">Go back to the home page <a class="font-weight-bold text-primary" th:href="@{/home}">here</a>!</h3>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

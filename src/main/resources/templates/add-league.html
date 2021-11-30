@@ -25,7 +25,7 @@
                 <div class="col">
                     <label for="capacity">Capacity</label>
                     <input th:field="*{capacity}" th:errorclass="is-invalid" name="capacity" id="capacity" type="number" class="form-control" placeholder="Capacity">
-                    <p id="capacityError" class="errors alert alert-danger invalid-feedback">Capacity must be less than 25 and more than 2</p>
+                    <p id="capacityError" class="errors alert alert-danger invalid-feedback">Capacity must be between 3 and 25</p>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">

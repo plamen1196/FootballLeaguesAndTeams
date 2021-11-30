@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <div class="text-center bg-blur">
+        <div th:object="${player}" class="container text-light text-center">
+            <h3 class="display-5"><strong class="text-white font-weight-bold text-capitalize"
+                                          th:text="*{fullName}"></strong></h3>
+        </div>
+        <div class="position-fixed top-40 start-40">
+            <img class="img-fluid" width="240" height="220" src="/images/player_logo.png" alt="Card image cap">
+        </div>
+        <div class="row mt-3 mb-3 text-white bg-success rounded">
+            <div th:object="${stats}" class="col-5 rounded m-auto pb-3">
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Number</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="${player.number}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Physical</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{physical}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Attack</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{attack}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Defence</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{defence}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Passing</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{passing}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Shooting</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{shooting}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Position</span>
+                    <span class="p-4 ttext-capitalize text-danger font-weight-bold" th:text="*{position}"></span>
+                </div>
+                <div class="mt-4 rounded p-2 border border-dark">
+                    <span class="p-4">Foot</span>
+                    <span class="p-4 text-capitalize text-danger font-weight-bold" th:text="*{foot}"></span>
+                </div>
+                <div th:if="${player.canDeleteOrEdit}">
+                    <form th:action="@{/player/edit/{id}(id=${player.id})}"
+                          th:method="get">
+                        <input type="submit"
+                               class="btn btn-link bg-primary text-white font-weight-bold border border-dark"
+                               value="Edit Player"/>
+                    </form>
+                    <form onclick="clicked(event)" th:action="@{/player/delete/{id}(id=${player.id})}"
+                          th:method="delete">
+                        <input type="submit"
+                               class="btn btn-link bg-danger text-white font-weight-bold border border-dark"
+                               value="Remove Player"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

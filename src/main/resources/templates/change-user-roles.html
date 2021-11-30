@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Change Roles</h1>
+    <div class="d-flex justify-content-center bg-secondary rounded">
+        <form th:method="patch"
+              th:action="@{/user/roles}"
+              th:object="${changeUserRole}"
+              class="text-light">
+            <h3 class="text-light border-bottom">Select User and Role</h3>
+            <h5 th:if="${bad_credentials}" class="text-center bg-danger text-capitalize rounded">You can't change your role!</h5>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="homeTeam">Username</label>
+                    <select th:field="*{username}" th:errorclass="is-invalid" name="awayTeam" id="awayTeam" class="custom-select">
+                        <option value="" selected>Select Username</option>
+                        <option th:each="user : ${users}"
+                                th:text="${user.username}"
+                                th:value="${user.username}"
+                                th:selected="${user.username} == *{username}">Model
+                        </option>
+                    </select>
+                    <p id="homeTeamError" class="errors alert alert-danger invalid-feedback">You must select
+                        a user!</p>
+                </div>
+            </div>
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="awayTeam">Role</label>
+                    <select th:field="*{userRole}" th:errorclass="is-invalid" name="homeTeam" id="homeTeam" class="custom-select">
+                        <option value="" selected>Select Role</option>
+                        <option th:each="role : ${T(com.example.FootballLeagues.model.entity.enums.UserRoleEnum).values()}"
+                                th:text="${role.name()}"
+                                th:value="${role.name()}"
+                                th:selected="${role.name()} == *{userRole}">Model
+                        </option>
+                    </select>
+                    <p id="footError" class="errors alert alert-danger invalid-feedback">You must select
+                        a role!</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Change Role</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/fragments::head">
+</head>
+<body>
+<header th:replace="templates/fragments::nav">
+</header>
+<main class="p-5 bg-blur text-center my-main">
+    <div class="text-center bg-blur">
+        <div class="container text-light text-center">
+            <h3 class="display-4"><strong class="text-white font-weight-bold">Results</strong></h3>
+        </div>
+        <div class="row mt-3 mb-3 text-white rounded">
+            <div class="col-5 rounded m-auto pb-3">
+                <table class="table-responsive table-hover table-dark">
+                    <tr>
+                        <th class="p-3 col-3 font-weight-bold">League</th>
+                        <th class="p-7 col-4 font-weight-bold">Result</th>
+                        <th class="p-3 col-3 font-weight-bold">Date</th>
+                    </tr>
+                    <tr th:each="result : ${results}">
+                        <td class="p-3 text-primary" th:text="${result.league}"></td>
+                        <td class="p-3 text-danger"
+                            th:text="|${result.homeTeam} ${result.homeGoals} : ${result.awayGoals} ${result.awayTeam}|"></td>
+                        <td class="p-3 text-warning" th:text="${result.timeOfMatch}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="templates/fragments::footer">
+</footer>
+</body>
+</html>

@@ -18,7 +18,7 @@
                 th:text="|RESULT: ${matchResult.homeTeamName}   ${matchResult.homeTeamGoals} : ${matchResult.awayTeamGoals}   ${matchResult.awayTeamName}|"></h5>
             <div class="form-row m-5">
                 <div class="col">
-                    <label for="league">Team</label>
+                    <label for="league">Select League</label>
                     <select th:field="*{id}" th:errorclass="is-invalid" name="league" id="league" class="custom-select">
                         <option value="" selected>Select League</option>
                         <option th:each="league : ${leagues}"

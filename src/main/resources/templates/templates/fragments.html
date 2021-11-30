@@ -41,6 +41,9 @@
                     <a class="nav-link" th:href="@{/team/ranking}">Ranking</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/matches/results}">Results</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link" th:href="@{/team/myteams}">My Teams</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
@@ -57,6 +60,8 @@
                     <div class="dropdown-menu position-static" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/league/add}">Add League</a>
                         <a class="dropdown-item" th:href="@{/matches}">Matches</a>
+                        <a class="dropdown-item" th:href="@{/statistics}">Statistics</a>
+                        <a class="dropdown-item" th:href="@{/user/roles}">Change User Roles</a>
                     </div>
                 </li>
             </ul>
