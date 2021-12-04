@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //This interceptor is giving information about every request.
-// In the statistic view you can see the count, if you are ADMIN.
+// In the statistic view you can see the count, if you have role ADMIN.
 @Component
 public class StatisticInterceptor implements HandlerInterceptor {
 

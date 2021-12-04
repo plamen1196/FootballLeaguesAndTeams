@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -22,13 +21,16 @@ public class PlayerController {
     private final PlayerService playerService;
     private final StatService statService;
     private final TeamService teamService;
+    private final UserService userService;
 
     public PlayerController(PlayerService playerService,
                             StatService statService,
-                            TeamService teamService) {
+                            TeamService teamService,
+                            UserService userService) {
         this.playerService = playerService;
         this.statService = statService;
         this.teamService = teamService;
+        this.userService = userService;
     }
 
     //ADD PLAYER
@@ -39,7 +41,13 @@ public class PlayerController {
             model.addAttribute("addPlayerBindingModel", addPlayerBindingModel());
         }
 
-        model.addAttribute("teamsByUser", teamService.findTeamsByUserName(user.getUserIdentifier()));
+        boolean isAdmin = userService.isAdmin(user.getUserIdentifier());
+
+        if (isAdmin){
+            model.addAttribute("teamsByUser", teamService.findAllTeams());
+        }else {
+            model.addAttribute("teamsByUser", teamService.findTeamsByUserName(user.getUserIdentifier()));
+        }
 
         return "add-player";
     }

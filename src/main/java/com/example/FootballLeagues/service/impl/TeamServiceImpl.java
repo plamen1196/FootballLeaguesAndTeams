@@ -18,6 +18,7 @@ import com.example.FootballLeagues.service.UserService;
 import com.example.FootballLeagues.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +26,10 @@ import java.util.stream.Collectors;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
-    private final ModelMapper modelMapper;
     private final LeagueRepository leagueRepository;
+
+    private final ModelMapper modelMapper;
+
     private final PlayerService playerService;
     private final UserService userService;
     private final ResultService resultService;
@@ -34,7 +37,8 @@ public class TeamServiceImpl implements TeamService {
     public TeamServiceImpl(TeamRepository teamRepository,
                            ModelMapper modelMapper,
                            LeagueRepository leagueRepository,
-                           PlayerService playerService, UserService userService, ResultService resultService) {
+                           PlayerService playerService,
+                           UserService userService, ResultService resultService) {
         this.teamRepository = teamRepository;
         this.modelMapper = modelMapper;
         this.leagueRepository = leagueRepository;
@@ -43,8 +47,9 @@ public class TeamServiceImpl implements TeamService {
         this.resultService = resultService;
     }
 
-    public boolean isOwner(String username, Long id) {
-        Team team = teamRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public boolean isOwner(String username, Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(teamId)));
         User caller = userService.findUserByUsername(username);
 
         return isAdmin(caller) ||
@@ -52,17 +57,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     private boolean isAdmin(User user) {
-        return user.
-                getRoles().
-                stream().
-                map(UserRole::getRole).
-                anyMatch(r -> r == UserRoleEnum.ADMIN);
+        return user
+                .getRoles()
+                .stream()
+                .map(UserRole::getRole)
+                .anyMatch(r -> r == UserRoleEnum.ADMIN);
     }
 
     @Override
-    public List<TeamDetailsView> findTeamsByPointsWithLeagueId(Long id, String username) {
+    public List<TeamDetailsView> findTeamsByPointsWithLeagueId(Long leagueId, String username) {
         return teamRepository
-                .findByLeagueIdOrderByPointsDesc(id)
+                .findByLeagueIdOrderByPointsDesc(leagueId)
                 .stream()
                 .map(team -> teamDetailsViewMap(team, username))
                 .collect(Collectors.toList());
@@ -106,7 +111,8 @@ public class TeamServiceImpl implements TeamService {
         team.setPoints(0);
         team.setLogo(LogoEnum.valueOf(addTeamBindingModel.getLogo()));
         team.setUser(userService.findUserByUsername(userIdentifier));
-        team.setLeague(leagueRepository.findByLevel(addTeamBindingModel.getLeague()).orElseThrow(() -> new ObjectNotFoundException(addTeamBindingModel.getLeague())));
+        team.setLeague(leagueRepository.findByLevel(addTeamBindingModel.getLeague())
+                .orElseThrow(() -> new ObjectNotFoundException(addTeamBindingModel.getLeague())));
 
         teamRepository.save(team);
 
@@ -122,10 +128,10 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDetailsView findTeamById(Long id, String username) {
-        return teamRepository.findById(id)
+    public TeamDetailsView findTeamById(Long teamId, String username) {
+        return teamRepository.findById(teamId)
                 .map(team -> teamDetailsViewMap(team, username))
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(teamId)));
     }
 
     @Override
@@ -145,17 +151,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void deleteTeam(Long id) {
+    public void deleteTeam(Long teamId) {
 
-        playerService.deleteAllPlayersByTeamId(id);
+        playerService.deleteAllPlayersByTeamId(teamId);
 
-        teamRepository.deleteById(id);
+        teamRepository.deleteById(teamId);
     }
 
     @Override
-    public void deleteTeamsByLeagueId(Long id) {
+    public void deleteTeamsByLeagueId(Long leagueId) {
 
-        teamRepository.findByLeagueIdOrderByPointsDesc(id)
+        teamRepository.findByLeagueIdOrderByPointsDesc(leagueId)
                 .forEach(team -> deleteTeam(team.getId()));
     }
 
@@ -169,6 +175,7 @@ public class TeamServiceImpl implements TeamService {
         Integer homeTeamGoals = selectTeamsBindingModel.getHomeTeamGoals();
         Integer awayTeamGoals = selectTeamsBindingModel.getAwayTeamGoals();
 
+        //write the result with the exact date
         resultService.writeResult(selectTeamsBindingModel, homeTeam.getLeague().getLevel());
 
         //give points, wins, loses, draws, matches, depends on the result
@@ -195,9 +202,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamServiceModel editTeam(AddTeamBindingModel addTeamBindingModel, Long id) {
-        Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public TeamServiceModel editTeam(AddTeamBindingModel addTeamBindingModel, Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(teamId)));
         team.setLeague(leagueRepository.findByLevel(addTeamBindingModel.getLeague())
                 .orElseThrow(() -> new ObjectNotFoundException(addTeamBindingModel.getLeague())));
         team.setLogo(LogoEnum.valueOf(addTeamBindingModel.getLogo()));

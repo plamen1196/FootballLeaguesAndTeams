@@ -41,8 +41,10 @@ public class PlayerServiceImpl implements PlayerService {
         this.userService = userService;
     }
 
-    public boolean isOwner(String username, Long id) {
-        Player player = playerRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public boolean isOwner(String username, Long playerId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerId)));
+
         User caller = userService.findUserByUsername(username);
 
         return isAdmin(caller) ||
@@ -50,16 +52,17 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     private boolean isAdmin(User user) {
-        return user.
-                getRoles().
-                stream().
-                map(UserRole::getRole).
-                anyMatch(r -> r == UserRoleEnum.ADMIN);
+        return user
+                .getRoles()
+                .stream()
+                .map(UserRole::getRole)
+                .anyMatch(role -> role == UserRoleEnum.ADMIN);
     }
 
     @Override
-    public List<PlayerDetailsView> findPlayersByTeamId(Long id, String username) {
-        return playerRepository.findByTeamIdOrderByNumberAsc(id)
+    public List<PlayerDetailsView> findPlayersByTeamId(Long teamId, String username) {
+        return playerRepository
+                .findByTeamIdOrderByNumberAsc(teamId)
                 .stream()
                 .map(player -> playerDetailsViewMap(player, username))
                 .collect(Collectors.toList());
@@ -105,34 +108,36 @@ public class PlayerServiceImpl implements PlayerService {
 
         statService.addStat(stat);
 
-
         return playerServiceModelMap(player);
     }
 
     @Override
-    public PlayerDetailsView findPlayerById(Long id, String username) {
-        return playerRepository.findById(id)
+    public PlayerDetailsView findPlayerById(Long playerId, String username) {
+        return playerRepository.findById(playerId)
                 .map(player -> playerDetailsViewMap(player, username))
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerId)));
     }
 
     @Override
-    public void deletePlayer(Long id) {
-        playerRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
-        statService.deleteStatByPlayerId(id);
-        playerRepository.deleteById(id);
+    public void deletePlayer(Long playerId) {
+        playerRepository.findById(playerId)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerId)));
+        statService.deleteStatByPlayerId(playerId);
+        playerRepository.deleteById(playerId);
     }
 
     @Override
-    public void deleteAllPlayersByTeamId(Long id) {
-        playerRepository.findByTeamIdOrderByNumberAsc(id)
+    public void deleteAllPlayersByTeamId(Long teamId) {
+        playerRepository.findByTeamIdOrderByNumberAsc(teamId)
                 .forEach(player -> deletePlayer(player.getId()));
     }
 
     @Override
     public PlayerServiceModel editPlayer(AddPlayerBindingModel addPlayerBindingModel, Long id) {
-        Player player = playerRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
-        player.setTeam(teamRepository.findByName(addPlayerBindingModel.getTeam()).orElseThrow(() -> new ObjectNotFoundException(addPlayerBindingModel.getTeam())));
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+        player.setTeam(teamRepository.findByName(addPlayerBindingModel.getTeam())
+                .orElseThrow(() -> new ObjectNotFoundException(addPlayerBindingModel.getTeam())));
         player.setFullName(addPlayerBindingModel.getFullName());
         player.setNumber(addPlayerBindingModel.getNumber());
 

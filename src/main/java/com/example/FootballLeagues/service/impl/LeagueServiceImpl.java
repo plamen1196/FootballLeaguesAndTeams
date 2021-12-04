@@ -57,7 +57,6 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     public LeagueServiceModel addLeague(AddLeagueBindingModel addLeagueBindingModel, String userIdentifier) {
 
-
         League league = modelMapper.map(addLeagueBindingModel, League.class);
 
         leagueRepository.save(league);
@@ -100,14 +99,19 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public boolean checkCapacity(String leagueLevel, String username) {
-        League league = leagueRepository.findByLevel(leagueLevel).orElseThrow(() -> new ObjectNotFoundException(leagueLevel));
-        int size = teamService.findTeamsByPointsWithLeagueId(league.getId(), username).size();
-        return size < league.getCapacity();
+        League league = leagueRepository.findByLevel(leagueLevel)
+                .orElseThrow(() -> new ObjectNotFoundException(leagueLevel));
+
+        int sizeOfAllTeamsInTheLeague = teamService.findTeamsByPointsWithLeagueId(league.getId(), username).size();
+
+        return sizeOfAllTeamsInTheLeague < league.getCapacity();
     }
 
     @Override
-    public LeagueServiceModel editLeague(AddLeagueBindingModel addLeagueBindingModel, Long id) {
-        League league = leagueRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public LeagueServiceModel editLeague(AddLeagueBindingModel addLeagueBindingModel, Long idOfTheLeague) {
+        League league = leagueRepository.findById(idOfTheLeague)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(idOfTheLeague)));
+
         league.setLevel(addLeagueBindingModel.getLevel());
         league.setCapacity(addLeagueBindingModel.getCapacity());
 

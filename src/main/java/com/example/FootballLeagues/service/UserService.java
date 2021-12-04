@@ -20,4 +20,6 @@ public interface UserService {
     List<User> findAllUsersExceptAdmin();
 
     User changeRoleOfUser(ChangeUserRole changeUserRole, String username);
+
+    boolean isAdmin(String userIdentifier);
 }

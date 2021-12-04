@@ -14,7 +14,7 @@ public class StatisticController {
     this.statisticService = statisticService;
   }
 
-
+  //SHOW STATISTICS
   @GetMapping("/statistics")
   public ModelAndView statistics() {
     ModelAndView modelAndView = new ModelAndView();

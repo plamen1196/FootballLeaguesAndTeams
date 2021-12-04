@@ -25,16 +25,13 @@ public class UserRegistrationController {
       this.modelMapper = modelMapper;
     }
 
-    @ModelAttribute("userModel")
-    public UserRegistrationBindingModel userModel() {
-        return new UserRegistrationBindingModel();
-    }
-
+    //REGISTER FORM
     @GetMapping("/users/register")
     public String registerUser() {
         return "register";
     }
 
+    //REGISTER USER
     @PostMapping("/users/register")
     public String register(
             @Valid UserRegistrationBindingModel userModel,
@@ -56,4 +53,9 @@ public class UserRegistrationController {
         return "redirect:/";
     }
 
+
+    @ModelAttribute("userModel")
+    public UserRegistrationBindingModel userModel() {
+        return new UserRegistrationBindingModel();
+    }
 }

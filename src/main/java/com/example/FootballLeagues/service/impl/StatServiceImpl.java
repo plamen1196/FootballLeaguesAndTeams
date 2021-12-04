@@ -45,22 +45,22 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public StatDetailsView findStatByPlayerId(Long id) {
-        return statRepository.findByPlayerId(id)
+    public StatDetailsView findStatByPlayerId(Long playerId) {
+        return statRepository.findByPlayerId(playerId)
                 .map(this::statDetailsViewMap)
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerId)));
     }
 
     @Override
-    public void deleteStatByPlayerId(Long id) {
-        Stat stat = statRepository.findByPlayerId(id)
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public void deleteStatByPlayerId(Long playerId) {
+        Stat stat = statRepository.findByPlayerId(playerId)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerId)));
         statRepository.deleteById(stat.getId());
     }
 
     @Override
-    public Stat findByPlayerIdReturnStatEntity(Long id) {
-        return statRepository.findByPlayerId(id)
-                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(id)));
+    public Stat findByPlayerIdReturnStatEntity(Long playerID) {
+        return statRepository.findByPlayerId(playerID)
+                .orElseThrow(() -> new ObjectNotFoundException(String.valueOf(playerID)));
     }
 }

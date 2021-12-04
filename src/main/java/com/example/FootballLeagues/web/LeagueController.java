@@ -31,6 +31,7 @@ public class LeagueController {
         this.teamService = teamService;
     }
 
+    //ADD
     @GetMapping("/add")
     public String addLeague(Model model) {
 
@@ -65,6 +66,7 @@ public class LeagueController {
         return "redirect:details/" + leagueServiceModel.getId();
     }
 
+    //EDIT
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
     public String editLeague(@PathVariable Long id, Model model) {
@@ -82,6 +84,7 @@ public class LeagueController {
         return "edit-league";
     }
 
+    //ERRORS
     @GetMapping("/edit/{id}/errors")
     public String editLeagueErrors(@PathVariable Long id, Model model) {
 
@@ -120,6 +123,7 @@ public class LeagueController {
         return "redirect:/league/details/" + leagueServiceModel.getId();
     }
 
+    //DELETE
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public String deleteLeague(@PathVariable Long id) {
@@ -128,6 +132,7 @@ public class LeagueController {
         return "redirect:/league/allleagues";
     }
 
+    //DETAILS
     @GetMapping("/details/{id}")
     public String leagueDetails(@PathVariable Long id, Model model, @AuthenticationPrincipal FootballLeagueUserImpl user) {
 
@@ -137,6 +142,7 @@ public class LeagueController {
         return "details-league";
     }
 
+    //ALL LEAGUES
     @GetMapping("/allleagues")
     public String allLeagues(Model model) {
 

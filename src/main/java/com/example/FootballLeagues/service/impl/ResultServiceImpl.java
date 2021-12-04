@@ -5,7 +5,6 @@ import com.example.FootballLeagues.model.entity.Result;
 import com.example.FootballLeagues.repository.ResultRepository;
 import com.example.FootballLeagues.service.ResultService;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 

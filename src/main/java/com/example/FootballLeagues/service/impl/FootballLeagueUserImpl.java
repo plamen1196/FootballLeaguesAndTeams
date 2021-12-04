@@ -6,6 +6,7 @@ import com.example.FootballLeagues.service.FootballLeagueUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+//UserDetails, this one is used when we write @Authenticated or Principal in the controller.
 public class FootballLeagueUserImpl extends User implements FootballLeagueUser {
 
     //two constructors for different purposes

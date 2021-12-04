@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(PasswordEncoder passwordEncoder,
                            UserRepository userRepository,
-                           UserRoleRepository userRoleRepository, FootballLeagueServiceImpl footballLeagueService) {
+                           UserRoleRepository userRoleRepository,
+                           FootballLeagueServiceImpl footballLeagueService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
         initializeUsers();
     }
 
+    //Initialize the two users: Admin and regular User, when the app starts for the first time
     private void initializeUsers() {
         if (userRepository.count() == 0) {
 
@@ -71,6 +73,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //Initialize the two roles USER and ADMIN, when the app starts for the first time
     private void initializeRoles() {
 
         if (userRoleRepository.count() == 0) {
@@ -103,14 +106,15 @@ public class UserServiceImpl implements UserService {
         // this is the Spring representation of a user
         UserDetails principal = footballLeagueService.loadUserByUsername(newUser.getUsername());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            principal,
-            newUser.getPassword(),
-            principal.getAuthorities()
+                principal,
+                newUser.getPassword(),
+                principal.getAuthorities()
         );
 
+        //SecurityContextHolder can be used to get the Principal in the service layer
         SecurityContextHolder.
-            getContext().
-            setAuthentication(authentication);
+                getContext().
+                setAuthentication(authentication);
     }
 
     public boolean isUserNameFree(String username) {
@@ -119,9 +123,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException(username));
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException(username));
     }
 
+    //Because nobody can change admin roles
     @Override
     public List<User> findAllUsersExceptAdmin() {
         return userRepository.findAllByUsernameNot("admin");
@@ -129,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changeRoleOfUser(ChangeUserRole changeUserRole, String username) {
-        if (changeUserRole.getUsername().equals(username)){
+        if (changeUserRole.getUsername().equals(username)) {
             return null;
         }
         User user = userRepository
@@ -139,12 +145,26 @@ public class UserServiceImpl implements UserService {
         UserRole adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
         UserRole userRole = userRoleRepository.findByRole(UserRoleEnum.USER);
 
-        if (changeUserRole.getUserRole().equals(UserRoleEnum.USER.name())){
+        if (changeUserRole.getUserRole().equals(UserRoleEnum.USER.name())) {
             user.setRoles(new HashSet<>(Set.of(userRole)));
-        }else {
+        } else {
             user.setRoles(new HashSet<>(Set.of(userRole, adminRole)));
         }
 
         return userRepository.save(user);
     }
+
+    @Override
+    public boolean isAdmin(String username) {
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException(username));
+
+        return user
+                .getRoles()
+                .stream()
+                .map(UserRole::getRole)
+                .anyMatch(role -> role == UserRoleEnum.ADMIN);
+    }
+
 }

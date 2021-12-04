@@ -14,6 +14,7 @@ public class UniqueUserNameValidator implements ConstraintValidator<UniqueUserNa
     this.userService = userService;
   }
 
+  //Use this in the controller with @Valid!
   @Override
   public boolean isValid(String userName, ConstraintValidatorContext context) {
     if (userName == null) {
